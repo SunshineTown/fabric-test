@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "com.extclp.test.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinWorld",
+    "MixinPlayerManger",
+    "MixinRecipeManager",
+    "MixinServerAdvancementLoader",
+    "MixinMinecraftServer",
+    "MixinPlayerAdvancementTracker",
+    "MixinServerPlayerEntity"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

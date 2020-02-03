@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "test",
+  "version": "${version}",
+  "authors": [
+    "extclp"
+  ],
+  "entrypoints": {
+    "main": [
+      "com.extclp.test.TestMod"
+    ]
+  },
+  "mixins": [
+    "test.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "1.14.x",
+    "fabricloader": "*"
+  }
+}
