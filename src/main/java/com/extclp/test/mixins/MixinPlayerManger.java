@@ -21,7 +21,9 @@ public abstract class MixinPlayerManger {
 
     @Redirect(method = "onPlayerConnect", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerPlayerEntity;dimension:Lnet/minecraft/world/dimension/DimensionType;", opcode = Opcodes.GETFIELD))
     public DimensionType onPlayerConnect(ServerPlayerEntity player){
-        if(player.dimension == DimensionType.THE_END && !TestMod.getConfig().enableEnd){
+        if(player.dimension == DimensionType.THE_END && !TestMod.getConfig().enableEnd ||
+                player.dimension == DimensionType.OVERWORLD && !getServer().isNetherAllowed()
+        ){
             ServerWorld world = getServer().getWorld(DimensionType.OVERWORLD);
             LevelProperties properties = ((TestWorld) world).getProperties();
             player.dimension = DimensionType.OVERWORLD;
