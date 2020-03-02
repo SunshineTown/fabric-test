@@ -14,7 +14,7 @@ public class MixinServerPlayerEntity {
 
     @Inject(method = "changeDimension", at = @At(value = "HEAD"), cancellable = true)
     public void onChangeDimension(DimensionType newDimension, CallbackInfoReturnable<Entity> cir){
-        if (newDimension == DimensionType.THE_END && !TestMod.getConfig().enableEnd) {
+        if (newDimension == DimensionType.THE_END && !TestMod.getConfig().enable_end) {
             cir.setReturnValue(null);
             cir.cancel();
         }

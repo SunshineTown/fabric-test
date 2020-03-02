@@ -12,7 +12,7 @@ public class MixinPlayerAdvancementTracker {
 
     @Inject(method = "load", at = @At("HEAD"), cancellable = true)
     public void onLoad(CallbackInfo ci){
-        if(!TestMod.getConfig().loadAdvancements){
+        if(!TestMod.getConfig().load_advancements){
             ci.cancel();
         }
     }

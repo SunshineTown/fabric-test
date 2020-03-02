@@ -6,15 +6,11 @@
     "extclp"
   ],
   "entrypoints": {
-    "main": [
+    "preLaunch": [
       "com.extclp.test.TestMod"
     ]
   },
   "mixins": [
     "test.mixins.json"
-  ],
-  "depends": {
-    "minecraft": "1.14.x",
-    "fabricloader": "*"
-  }
+  ]
 }

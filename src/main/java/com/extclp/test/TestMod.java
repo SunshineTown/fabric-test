@@ -1,16 +1,17 @@
 package com.extclp.test;
 
+import com.extclp.test.commands.FlySpeedCommand;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.registry.CommandRegistry;
+import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+import net.minecraft.SharedConstants;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
-public class TestMod implements ModInitializer {
+public class TestMod implements PreLaunchEntrypoint {
 
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static TestConfig config;
 
     public static TestConfig getConfig() {
@@ -18,26 +19,29 @@ public class TestMod implements ModInitializer {
     }
 
     @Override
-    public void onInitialize() {
-        setupConfig();
+    public void onPreLaunch() {
+        SharedConstants.isDevelopment = true;
+        try {
+            setupConfig();
+            CommandRegistry.INSTANCE.register(false, FlySpeedCommand::register);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void setupConfig() {
+    public static void setupConfig() throws IOException {
         File configFile = new File("config/test.json");
-        try {
-            if(configFile.exists()){
-                try (FileReader reader = new FileReader(configFile)){
-                    config = GSON.fromJson(reader, TestConfig.class);
-                }
-            }else {
-                configFile.getParentFile().mkdir();
-                config = new TestConfig();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        if (configFile.exists()) {
+            try (Reader reader = new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8)) {
+                config = gson.fromJson(reader, TestConfig.class);
             }
-            try (FileWriter writer = new FileWriter(configFile)){
-                GSON.toJson(config, config.getClass(), writer);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+        } else {
+            configFile.getParentFile().mkdir();
+            config = new TestConfig();
+        }
+        try (Writer writer = new OutputStreamWriter(new FileOutputStream(configFile), StandardCharsets.UTF_8)) {
+            gson.toJson(config, config.getClass(), writer);
         }
     }
 }

@@ -22,7 +22,7 @@ public abstract class MixinRecipeManager extends JsonDataLoader {
 
     @Override
     protected Map<Identifier, JsonObject> method_20731(ResourceManager resourceManager, Profiler profiler) {
-        if(TestMod.getConfig().loadRecipes){
+        if(TestMod.getConfig().load_recipes){
             return super.method_20731(resourceManager, profiler);
         }
         return Maps.newHashMap();

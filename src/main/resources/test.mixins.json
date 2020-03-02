@@ -9,7 +9,10 @@
     "MixinServerAdvancementLoader",
     "MixinMinecraftServer",
     "MixinPlayerAdvancementTracker",
-    "MixinServerPlayerEntity"
+    "MixinServerConfigList",
+    "MixinServerPlayerEntity",
+    "MixinOperatorList",
+    "MixinPlayerAbilities"
   ],
   "injectors": {
     "defaultRequire": 1
