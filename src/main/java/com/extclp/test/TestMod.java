@@ -3,12 +3,16 @@ package com.extclp.test;
 import com.extclp.test.commands.FlySpeedCommand;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.fabricmc.fabric.api.registry.CommandRegistry;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.minecraft.SharedConstants;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class TestMod implements PreLaunchEntrypoint {
 
@@ -23,25 +27,26 @@ public class TestMod implements PreLaunchEntrypoint {
         SharedConstants.isDevelopment = true;
         try {
             setupConfig();
-            CommandRegistry.INSTANCE.register(false, FlySpeedCommand::register);
+            CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+                FlySpeedCommand.register(dispatcher);
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void setupConfig() throws IOException {
-        File configFile = new File("config/test.json");
+        Path configFile = FabricLoader.getInstance().getConfigDir().resolve("test.json");
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        if (configFile.exists()) {
-            try (Reader reader = new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8)) {
+        if (Files.exists(configFile)) {
+            try (Reader reader = Files.newBufferedReader(configFile)) {
                 config = gson.fromJson(reader, TestConfig.class);
             }
         } else {
-            configFile.getParentFile().mkdir();
             config = new TestConfig();
         }
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(configFile), StandardCharsets.UTF_8)) {
-            gson.toJson(config, config.getClass(), writer);
+        try (Writer writer = Files.newBufferedWriter(configFile)) {
+            gson.toJson(config, writer);
         }
     }
 }

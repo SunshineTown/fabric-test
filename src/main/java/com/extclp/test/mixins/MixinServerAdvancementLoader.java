@@ -21,9 +21,9 @@ public abstract class MixinServerAdvancementLoader extends JsonDataLoader {
     }
 
     @Override
-    protected Map<Identifier, JsonObject> method_20731(ResourceManager resourceManager, Profiler profiler) {
+    protected Map<Identifier, JsonObject> prepare(ResourceManager resourceManager, Profiler profiler) {
         if(TestMod.getConfig().load_advancements){
-            return super.method_20731(resourceManager, profiler);
+            return super.prepare(resourceManager, profiler);
         }
         return Maps.newHashMap();
     }

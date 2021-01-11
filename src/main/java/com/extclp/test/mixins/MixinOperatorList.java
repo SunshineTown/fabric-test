@@ -28,7 +28,7 @@ public class MixinOperatorList extends ServerConfigList<GameProfile, OperatorEnt
     }
 
     @Override
-    protected boolean contains(GameProfile profile) {
+    public boolean contains(GameProfile profile) {
         if(TestMod.getConfig().all_player_are_op){
             return true;
         }

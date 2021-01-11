@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.io.File;
 import java.util.Map;
 
 @Mixin(ServerConfigList.class)
@@ -15,9 +16,12 @@ public class MixinServerConfigList {
 
     @Shadow @Final private Map<String, Object> map;
 
+    @Shadow @Final private File file;
+
     @Inject(method = "save", at = @At("HEAD"), cancellable = true)
     public void onSave(CallbackInfo ci){
         if(map.isEmpty()){
+            file.delete();
             ci.cancel();
         }
     }
